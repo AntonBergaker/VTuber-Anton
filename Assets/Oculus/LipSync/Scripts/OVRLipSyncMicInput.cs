@@ -134,14 +134,14 @@ public class OVRLipSyncMicInput : MonoBehaviour
         {
             if (Microphone.IsRecording(selectedDevice))
             {
-                StopMicrophone();
+                //StopMicrophone();
             }
             return;
         }
 
         if (!Application.isPlaying)
         {
-            StopMicrophone();
+            //StopMicrophone();
             return;
         }
 
@@ -217,8 +217,9 @@ public class OVRLipSyncMicInput : MonoBehaviour
     {
         focused = focus;
 
-        if (!focused)
-            StopMicrophone();
+        if (!focused) {
+            //StopMicrophone();
+        }
     }
 
     /// <summary>
@@ -229,8 +230,9 @@ public class OVRLipSyncMicInput : MonoBehaviour
     {
         focused = !pauseStatus;
 
-        if (!focused)
-            StopMicrophone();
+        if (!focused) {
+            //StopMicrophone();
+        }
     }
 
     void OnDisable()
@@ -274,16 +276,19 @@ public class OVRLipSyncMicInput : MonoBehaviour
             {
                 if (GUI.Button(new Rect(left + ((width + buttonSpaceLeft) * i),
                                         top + ((height + buttonSpaceTop) * i), width, height),
-                               Microphone.devices[i].ToString()))
-                {
-                    StopMicrophone();
-                    selectedDevice = Microphone.devices[i].ToString();
-                    micSelected = true;
-                    GetMicCaps();
-                    StartMicrophone();
+                               Microphone.devices[i].ToString())) {
+                    SetMic(Microphone.devices[i].ToString());
                 }
             }
         }
+    }
+
+    public void SetMic(string micString) {
+        StopMicrophone();
+        selectedDevice = micString;
+        micSelected = true;
+        GetMicCaps();
+        StartMicrophone();
     }
 
     /// <summary>
@@ -336,7 +341,6 @@ public class OVRLipSyncMicInput : MonoBehaviour
     /// Stops the microphone.
     /// </summary>
     public void StopMicrophone() {
-        return;
         if (micSelected == false) return;
 
         // Overriden with a clip to play? Don't stop the audio source

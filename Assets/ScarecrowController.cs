@@ -16,6 +16,8 @@ public class ScarecrowController : MonoBehaviour {
 
     private float[] clipSampleData;
 
+    private float smoothedLoudness;
+
     private void Start() {
         clipSampleData = new float[SampleDataLength];
     }
@@ -29,10 +31,11 @@ public class ScarecrowController : MonoBehaviour {
         }
         clipLoudness /= SampleDataLength;
 
-
         clipLoudness = Mathf.Log(clipLoudness*3f + 1f)/3f;
 
-        BaseTransform.transform.localPosition = new Vector3(0, LoudnessYModifier * clipLoudness, 0);
-        BaseTransform.eulerAngles = new Vector3(0, 0, LoudnessRotationModifier * clipLoudness * (1+0.25f*Mathf.Sin(Time.time*2)));
+        smoothedLoudness = Mathf.Lerp(smoothedLoudness, clipLoudness, Time.deltaTime * 5);
+
+        BaseTransform.transform.localPosition = new Vector3(0, LoudnessYModifier * smoothedLoudness, 0);
+        BaseTransform.eulerAngles = new Vector3(0, 0, LoudnessRotationModifier * smoothedLoudness * (1+0.25f*Mathf.Sin(Time.time*2)));
     }
 }
