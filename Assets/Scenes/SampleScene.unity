@@ -490,7 +490,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 0, b: 0.72156864, a: 0}
+  m_BackGroundColor: {r: 0, g: 1, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1423,7 +1423,7 @@ MonoBehaviour:
   LipSync: {fileID: 1367014500}
   MicInput: {fileID: 1367014497}
   LoudnessRotationModifier: 10
-  LoudnessYModifier: 2
+  LoudnessYModifier: 3
   SampleDataLength: 1024
   BaseTransform: {fileID: 1610397052}
 --- !u!1 &2120862920
