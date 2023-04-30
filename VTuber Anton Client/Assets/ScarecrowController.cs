@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class ScarecrowController : MonoBehaviour {
 
-    public OVRLipSyncContext LipSync;
-    public OVRLipSyncMicInput MicInput;
-
     public float LoudnessRotationModifier;
     public float LoudnessYModifier;
 
@@ -23,7 +20,7 @@ public class ScarecrowController : MonoBehaviour {
     }
 
     private void Update() {
-        LipSync.audioSource.GetOutputData(clipSampleData, 0);
+        //LipSync.audioSource.GetOutputData(clipSampleData, 0);
         float clipLoudness = 0f;
         foreach (var sample in clipSampleData)
         {
