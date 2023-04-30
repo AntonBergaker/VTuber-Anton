@@ -1,38 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScarecrowController : MonoBehaviour {
+public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowController.LipsyncData> {
+    public WebsocketClient Client;
+    public Mouth Mouth;
 
     public float LoudnessRotationModifier;
     public float LoudnessYModifier;
 
-    public int SampleDataLength = 1024;
-
     public Transform BaseTransform;
 
-    private float[] clipSampleData;
+    private float volume = 0;
 
-    private float smoothedLoudness;
+    void IPacketListener<LipsyncData>.HandlePacket(LipsyncData packet) {
+        Mouth.SetMouthShape(packet.Vismes);
+        volume = packet.Volume;
+    }
 
     private void Start() {
-        clipSampleData = new float[SampleDataLength];
+        Client.Listen("lipsync", this);
     }
 
     private void Update() {
-        //LipSync.audioSource.GetOutputData(clipSampleData, 0);
-        float clipLoudness = 0f;
-        foreach (var sample in clipSampleData)
-        {
-            clipLoudness += Mathf.Abs(sample);
-        }
-        clipLoudness /= SampleDataLength;
+        
 
-        clipLoudness = Mathf.Log(clipLoudness*3f + 1f)/3f;
-
-        smoothedLoudness = Mathf.Lerp(smoothedLoudness, clipLoudness, Time.deltaTime * 5);
-
-        BaseTransform.transform.localPosition = new Vector3(0, LoudnessYModifier * smoothedLoudness, 0);
-        BaseTransform.eulerAngles = new Vector3(0, 0, LoudnessRotationModifier * smoothedLoudness * (1+0.25f*Mathf.Sin(Time.time*2)));
+        BaseTransform.transform.localPosition = new Vector3(0, LoudnessYModifier * volume, 0);
+        BaseTransform.eulerAngles = new Vector3(0, 0, LoudnessRotationModifier * volume * (1+0.25f*Mathf.Sin(Time.time*2)));
     }
+
+    private class LipsyncData {
+        public string Vismes { get; set; }
+        public float Volume { get; set; }
+    }
+
 }
