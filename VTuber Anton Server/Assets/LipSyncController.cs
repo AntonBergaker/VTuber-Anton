@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class LipSyncController : MonoBehaviour {
@@ -24,7 +25,10 @@ public class LipSyncController : MonoBehaviour {
             if (File.Exists(filePath))
             {
                 string newMic = File.ReadAllText(filePath);
-                micInput.SetMic(newMic);
+                if (Microphone.devices.Contains(newMic)) {
+                    micInput.SetMic(newMic);
+                }
+                
             }
 
             lastSavedDevice = micInput.selectedDevice;
