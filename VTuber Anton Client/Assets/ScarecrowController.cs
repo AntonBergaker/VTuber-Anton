@@ -6,6 +6,7 @@ using UnityEngine;
 public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowController.LipsyncData> {
     public WebsocketClient Client;
     public Mouth Mouth;
+    public BlinkTimer Eyes;
 
     public float LoudnessRotationModifier;
     public float LoudnessYModifier;
@@ -17,6 +18,11 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowContr
     void IPacketListener<LipsyncData>.HandlePacket(LipsyncData packet) {
         Mouth.SetMouthShape(packet.Vismes);
         volume = packet.Volume;
+        if (packet.Laughter > 0.5f) {
+            Eyes.SetOverrideClose();
+        } else {
+            Eyes.ResetOverrideClose();
+        }
     }
 
     private void Start() {
@@ -63,6 +69,7 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowContr
     private class LipsyncData {
         public string Vismes { get; set; }
         public float Volume { get; set; }
+        public float Laughter { get; set; }
     }
 
 }

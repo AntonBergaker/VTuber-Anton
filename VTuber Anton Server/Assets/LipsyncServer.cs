@@ -35,12 +35,14 @@ public class LipsyncServer : MonoBehaviour {
         server.BroadcastData("lipsync", new LipsyncData() {
             Vismes = vismesBest.CurrentVisme,
             Volume = smoothedLoudness,
+            Laughter = lipSync.laughterScore,
         });
     }
 
     private class LipsyncData {
         public string Vismes { get; set; }
         public float Volume { get; set; }
+        public float Laughter { get; set; }
     }
 
 
