@@ -14,13 +14,14 @@ public abstract class VerletNode : MonoBehaviour {
     [HideInInspector]
     public List<VerletConnectionData> Connections = new();
 
-    public abstract void ApplyMovement(float effect);
+    public abstract void ApplyMovement(float effect, int progressIndex, int totalProgress);
 }
 
 [Serializable]
 public class VerletConnectionData {
-    public VerletNode Other;
+    public VerletBranch Other;
     public float Strength = 0.5f;
+    public float DistanceStrength = 0f;
 
     [HideInInspector]
     public Vector2 Offset;

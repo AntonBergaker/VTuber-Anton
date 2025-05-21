@@ -18,11 +18,8 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowContr
     void IPacketListener<LipsyncData>.HandlePacket(LipsyncData packet) {
         Mouth.SetMouthShape(packet.Vismes);
         volume = packet.Volume;
-        if (packet.Laughter > 0.5f) {
-            Eyes.SetOverrideClose();
-        } else {
-            Eyes.ResetOverrideClose();
-        }
+        
+        Eyes.SetHappyClose(packet.Laughter > 0.33f);
     }
 
     private void Start() {

@@ -8,12 +8,8 @@ public class BlinkTimer : MonoBehaviour {
 
     private float blinkCountdown;
 
-    public void ResetOverrideClose() {
-        
-    }
-
-    public void SetOverrideClose() {
-        Animator.SetTrigger("Blink");
+    public void SetHappyClose(bool value) {
+        Animator.SetBool("HappyClose", value);
     }
 
     private void Start() {

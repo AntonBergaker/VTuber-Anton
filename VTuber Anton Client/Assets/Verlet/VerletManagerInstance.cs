@@ -11,7 +11,7 @@ public class VerletManagerInstance : MonoBehaviour {
 
     void Update() {
         for (int i = 0; i < Iterations; i++) {
-            TickVerlet(Mathf.Clamp01(1f / Iterations));
+            TickVerlet(Mathf.Clamp01(1f / Iterations), i, Iterations);
         }
 
         // Fix visuals
@@ -27,22 +27,39 @@ public class VerletManagerInstance : MonoBehaviour {
         }
     }
 
-    private void TickVerlet(float effect) {
+    private void TickVerlet(float effect, int progressIndex, int totalProgress) {
         foreach (var node in _nodes) {
-            node.ApplyMovement(effect);
+            node.ApplyMovement(effect, progressIndex, totalProgress);
         }
 
         foreach (var node in _nodes) {
             foreach (var connection in node.Connections) {
-                var totalWeight = node.Weight;
                 var other = connection.Other;
+                var totalWeight = other.Weight + node.Weight;
 
                 var diff = other.Position - RotateLocalPosition(node.Rotation, connection.Offset) - node.Position;
 
                 diff *= Mathf.Clamp01(effect * connection.Strength);
                 node.Position += diff * (other.Weight / totalWeight);
-
                 other.Position -= diff * (node.Weight / totalWeight);
+            }
+        }
+
+        // Apply distance constraints
+        foreach (var node in _nodes) {
+            foreach (var connection in node.Connections) {
+                var other = connection.Other;
+                var diff = other.Position - node.Position;
+                var dist = diff.magnitude;
+                var expectedDist = connection.Offset.magnitude;
+                var distanceWrong = dist - expectedDist;
+
+                var totalWeight = other.Weight + node.Weight;
+                var normalDiff = diff.normalized;
+                var totalEffect = distanceWrong * effect * connection.DistanceStrength;
+
+                node.Position += normalDiff * totalEffect * (other.Weight / totalWeight);
+                other.Position -= normalDiff * totalEffect * (node.Weight / totalWeight);
             }
         }
 
@@ -57,6 +74,9 @@ public class VerletManagerInstance : MonoBehaviour {
 
     private void FixAnglesRecursive(VerletNode node) {
         foreach (var connection in node.Connections) {
+            if (connection.Other.MainConnection != connection) {
+                continue;
+            }
             connection.Other.Rotation = AngleFromVector(connection.Other.Position - node.Position);
             FixAnglesRecursive(connection.Other);
         }
@@ -84,9 +104,20 @@ public class VerletManagerInstance : MonoBehaviour {
         return GetVectorFromPolar(len, angle + parentRotation);
     }
 
+    private List<VerletBranch> _leftToCalculate = new();
+
     public void RegisterNode(VerletRoot node) {
         AddNode(node);
         DiscoverBranch(node);
+
+        foreach (var branch in _leftToCalculate) {
+            foreach (var secondaryConnection in branch.SecondaryConnections) {
+                branch.Connections.Add(secondaryConnection);
+                secondaryConnection.Offset = CalculateConnection(branch, secondaryConnection.Other);
+            }
+            
+        }
+        _leftToCalculate.Clear();
     }
 
     private void AddNode(VerletNode node) {
@@ -105,25 +136,33 @@ public class VerletManagerInstance : MonoBehaviour {
             }
 
             AddNode(branch);
+            _leftToCalculate.Add(branch);
 
             var baseDiff = branch.Position - node.Position;
-            var polar = GetPolarFromVector(baseDiff);
-
-            var diff = GetVectorFromPolar(polar.Distance, polar.Angle - node.Rotation);
 
             var connection = new VerletConnectionData() {
-                Offset = diff,
+                Offset = CalculateConnection(node, branch),
                 Other = branch,
                 Strength = branch.BaseStrength,
+                DistanceStrength = branch.BaseDistanceStrength,
             };
 
             var rotation = AngleFromVector(baseDiff);
             branch.RotationOffset = branch.Rotation - rotation;
             branch.Rotation = rotation;
+            branch.MainConnection = connection;
             node.Connections.Add(connection);
 
             DiscoverBranch(branch);
         }
+    }
+
+    private Vector2 CalculateConnection(VerletNode node, VerletBranch branch) {
+        var baseDiff = branch.Position - node.Position;
+        var polar = GetPolarFromVector(baseDiff);
+
+        var diff = GetVectorFromPolar(polar.Distance, polar.Angle - node.Rotation);
+        return diff;
     }
 }
 
