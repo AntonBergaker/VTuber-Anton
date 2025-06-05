@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class VerletBranch : VerletNode {
     public float BaseStrength = 0.5f;
     public float BaseDistanceStrength = 0f;
+    public float Inertia = 0;
     public float Dampening = 0;
 
     public List<VerletConnectionData> SecondaryConnections = new();
@@ -23,6 +25,6 @@ public class VerletBranch : VerletNode {
         var speed = LastPosition - position;
         LastPosition = position;
         Position += speed;
-        LastPosition += speed * effect * Dampening;
+        LastPosition += speed * Mathf.Clamp01(effect * Inertia);
     }
 }

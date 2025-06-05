@@ -12,7 +12,6 @@ public class LipsyncServer : MonoBehaviour {
 
     public int SampleDataLength = 1024;
     private float[] clipSampleData;
-    private float smoothedLoudness;
 
     private void Awake() {
         clipSampleData = new float[SampleDataLength];
@@ -30,11 +29,9 @@ public class LipsyncServer : MonoBehaviour {
 
         clipLoudness = Mathf.Log(clipLoudness * 3f + 1f) / 3f;
 
-        smoothedLoudness = Mathf.Lerp(smoothedLoudness, clipLoudness, Time.deltaTime * 5);
-
         server.BroadcastData("lipsync", new LipsyncData() {
             Vismes = vismesBest.CurrentVisme,
-            Volume = smoothedLoudness,
+            Volume = clipLoudness,
             Laughter = lipSync.laughterScore,
         });
     }

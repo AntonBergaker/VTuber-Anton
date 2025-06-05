@@ -8,18 +8,13 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowContr
     public Mouth Mouth;
     public BlinkTimer Eyes;
 
-    public float LoudnessRotationModifier;
-    public float LoudnessYModifier;
-
-    public Transform BaseTransform;
-
-    private float volume = 0;
+    [SerializeField]
+    private LoudnessBobber loudnessBobber;
 
     void IPacketListener<LipsyncData>.HandlePacket(LipsyncData packet) {
         Mouth.SetMouthShape(packet.Vismes);
-        volume = packet.Volume;
-        
-        Eyes.SetHappyClose(packet.Laughter > 0.33f);
+        Eyes.SetHappy(packet.Laughter);
+        loudnessBobber.SetVolume(packet.Volume);
     }
 
     private void Start() {
@@ -56,12 +51,6 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<ScarecrowContr
         }
     }
 
-    private void Update() {
-        
-
-        BaseTransform.transform.localPosition = new Vector3(0, LoudnessYModifier * volume, 0);
-        BaseTransform.eulerAngles = new Vector3(0, 0, LoudnessRotationModifier * volume * (1+0.25f*Mathf.Sin(Time.time*2)));
-    }
 
     private class LipsyncData {
         public string Vismes { get; set; }

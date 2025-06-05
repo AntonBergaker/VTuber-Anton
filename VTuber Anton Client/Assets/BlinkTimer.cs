@@ -5,11 +5,19 @@ using UnityEngine;
 public class BlinkTimer : MonoBehaviour {
 
     public Animator Animator;
+    public float HappyStartThreshold = 0.4f;
+    public float HappyEndThreshold = 0.2f;
 
     private float blinkCountdown;
+    
 
-    public void SetHappyClose(bool value) {
-        Animator.SetBool("HappyClose", value);
+    public void SetHappy(float happyValue) {
+        if (happyValue > 0.4f) {
+            Animator.SetBool("HappyClose", true);
+        }
+        if (happyValue < 0.1f) {
+            Animator.SetBool("HappyClose", false);
+        }
     }
 
     private void Start() {

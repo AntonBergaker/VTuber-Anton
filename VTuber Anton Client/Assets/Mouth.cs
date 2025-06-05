@@ -4,20 +4,20 @@ using System.Linq;
 using UnityEngine;
 
 public class Mouth : MonoBehaviour {
-    public MeshRenderer Renderer;
+    public SpriteRenderer Renderer;
 
     [Serializable]
-    public struct VismesTexture {
+    public struct VismesSprite {
         public string Name;
-        public Texture2D Image;
+        public Sprite Image;
     }
 
-    public VismesTexture[] VismesTextures;
+    public VismesSprite[] VismesTextures;
 
-    private Dictionary<string, Texture2D> namedVismesTextures;
+    private Dictionary<string, Sprite> namedVismesSprites;
 
     private void Awake() {
-        namedVismesTextures = VismesTextures.ToDictionary(x => x.Name, x => x.Image);
+        namedVismesSprites = VismesTextures.ToDictionary(x => x.Name, x => x.Image);
     }
 
     void Start() {
@@ -25,12 +25,12 @@ public class Mouth : MonoBehaviour {
     }
 
     public void SetMouthShape(string vismes) {
-        if (!namedVismesTextures.TryGetValue(vismes, out var texture)) {
+        if (!namedVismesSprites.TryGetValue(vismes, out var texture)) {
             Debug.Log($"No vismes for {vismes}");
             return;
         }
 
-        Renderer.material.mainTexture = texture;
+        Renderer.sprite = texture;
     }
 
 }
