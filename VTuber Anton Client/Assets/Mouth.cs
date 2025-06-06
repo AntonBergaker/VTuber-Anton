@@ -24,9 +24,9 @@ public class Mouth : MonoBehaviour {
         Renderer.sortingLayerName = "Default";
     }
 
-    public void SetMouthShape(string vismes) {
-        if (!namedVismesSprites.TryGetValue(vismes, out var texture)) {
-            Debug.Log($"No vismes for {vismes}");
+    public void SetMouthShape(string visemes) {
+        if (!namedVismesSprites.TryGetValue(visemes, out var texture)) {
+            Debug.Log($"No visemes for {visemes}");
             return;
         }
 

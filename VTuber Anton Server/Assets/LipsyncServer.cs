@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using WebSocketSharp;
-using WebSocketSharp.Server;
+using VTuberAnton.Common.Packets;
 
 public class LipsyncServer : MonoBehaviour {
     public WebsocketServer server;
@@ -29,18 +26,10 @@ public class LipsyncServer : MonoBehaviour {
 
         clipLoudness = Mathf.Log(clipLoudness * 3f + 1f) / 3f;
 
-        server.BroadcastData("lipsync", new LipsyncData() {
-            Vismes = vismesBest.CurrentVisme,
+        server.BroadcastData("lipsync", new LipsyncPacket() {
+            Visemes = vismesBest.CurrentVisme,
             Volume = clipLoudness,
             Laughter = lipSync.laughterScore,
         });
     }
-
-    private class LipsyncData {
-        public string Vismes { get; set; }
-        public float Volume { get; set; }
-        public float Laughter { get; set; }
-    }
-
-
 }

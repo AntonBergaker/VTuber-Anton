@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class VerletBranch : VerletNode {
     public float BaseStrength = 0.5f;

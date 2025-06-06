@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using VTuberAnton.Common.Packets;
 
-public class PigBomba : MonoBehaviour, IPacketListener<PigBomba.TwitchChatData>
+public class PigBomba : MonoBehaviour, IPacketListener<TwitchChatPacket>
 {
     public WebsocketClient Client;
     public GameObject PigBombaTemplate;
@@ -11,7 +10,7 @@ public class PigBomba : MonoBehaviour, IPacketListener<PigBomba.TwitchChatData>
         Client.Listen("twitch_chat", this);
     }
 
-    void IPacketListener<TwitchChatData>.HandlePacket(TwitchChatData packet) {
+    void IPacketListener<TwitchChatPacket>.HandlePacket(TwitchChatPacket packet) {
         var lower = packet.Message.ToLower();
         if (!lower.Contains("pig bomba") && !lower.Contains("pigbomba")) {
             return;
@@ -21,14 +20,4 @@ public class PigBomba : MonoBehaviour, IPacketListener<PigBomba.TwitchChatData>
         obj.SetActive(true);
     }
 
-    private class TwitchChatData {
-        public TwitchChatData(string message, string user) {
-            Message = message;
-            User = user;
-        }
-
-        public string Message { get; set; }
-        public string User { get; set; }
-
-    }
 }

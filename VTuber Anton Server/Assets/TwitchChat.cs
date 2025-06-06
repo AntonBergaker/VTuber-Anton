@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lexone.UnityTwitchChat;
 using System;
+using VTuberAnton.Common.Packets;
 
 public class TwitchChat : MonoBehaviour
 {
@@ -13,17 +14,7 @@ public class TwitchChat : MonoBehaviour
     }
 
     private void OnChatMessage(Chatter obj) {
-        Server.BroadcastData("twitch_chat", new TwitchChatData(obj.message, obj.tags.displayName));
+        Server.BroadcastData("twitch_chat", new TwitchChatPacket(obj.message, obj.tags.displayName));
     }
 
-    private class TwitchChatData {
-        public TwitchChatData(string message, string user) {
-            Message = message;
-            User = user;
-        }
-
-        public string Message { get; set; }
-        public string User { get; set; }
-
-    }
 }

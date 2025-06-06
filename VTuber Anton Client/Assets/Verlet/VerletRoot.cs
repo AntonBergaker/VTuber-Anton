@@ -1,12 +1,31 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class VerletRoot : VerletNode {
+    private float _lastScale;
     private Vector2 _lastPosition;
     private float _lastRotation;
 
     public override void ApplyMovement(float effect, int progressIndex, int totalProgress) {
+        var scaleOne = GetGlobalScaleOneAxis();
+        if (_lastScale != scaleOne) {
+            var change = scaleOne / _lastScale;
+            
+            var all = GetMainBranches(this).SelectMany(x => x.Connections).ToList();
+            var unique = all.Distinct().ToList();
+            foreach (var connection in Connections) {
+                connection.Offset *= change;
+            }
+            foreach (var branch in GetMainBranches(this)) {
+                foreach (var connection in branch.Connections) {
+                    connection.Offset *= change;
+                }
+            }
+            _lastScale = scaleOne;
+        }
+
         if (progressIndex >= totalProgress - 1) {
             _lastRotation = transform.eulerAngles.z;
             _lastPosition = transform.position;
@@ -27,6 +46,7 @@ public class VerletRoot : VerletNode {
     private void Start() {
         _lastRotation = transform.eulerAngles.z;
         _lastPosition = transform.position;
+        _lastScale = GetGlobalScaleOneAxis();
         VerletManager.Instance.RegisterNode(this);
     }
 
@@ -42,5 +62,15 @@ public class VerletRoot : VerletNode {
                 yield return childBranch;
             }
         }
+    }
+
+    private float GetGlobalScaleOneAxis() {
+        var scale = transform.localScale.x;
+        var parent = transform.parent;
+        while (parent != null) {
+            scale *= parent.localScale.x;
+            parent = parent.parent;
+        }
+        return scale;
     }
 }
