@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0556bae593afa19429273af0a0b6be54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 1
+  Weight: 0.5
   Position: {x: 0, y: 0}
   Rotation: 0
   Connections: []
@@ -1968,7 +1968,7 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -2350,7 +2350,7 @@ MonoBehaviour:
   BaseStrength: 1
   BaseDistanceStrength: 5
   Inertia: 0
-  Dampening: 0.5
+  Dampening: 0.75
   SecondaryConnections: []
   RotationOffset: 0
   LastPosition: {x: 0, y: 0}
@@ -2602,7 +2602,7 @@ MonoBehaviour:
   BaseStrength: 1
   BaseDistanceStrength: 5
   Inertia: 0
-  Dampening: 0.5
+  Dampening: 0.75
   SecondaryConnections: []
   RotationOffset: 0
   LastPosition: {x: 0, y: 0}
@@ -4647,7 +4647,7 @@ MonoBehaviour:
   BaseStrength: 1
   BaseDistanceStrength: 5
   Inertia: 0
-  Dampening: 0.5
+  Dampening: 0.75
   SecondaryConnections: []
   RotationOffset: 0
   LastPosition: {x: 0, y: 0}
@@ -6554,14 +6554,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0556bae593afa19429273af0a0b6be54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 1
+  Weight: 0.5
   Position: {x: 0, y: 0}
   Rotation: 0
   Connections: []
   BaseStrength: 1
   BaseDistanceStrength: 5
   Inertia: 0
-  Dampening: 0.5
+  Dampening: 0.75
   SecondaryConnections: []
   RotationOffset: 0
   LastPosition: {x: 0, y: 0}
@@ -6622,7 +6622,7 @@ MonoBehaviour:
   BaseStrength: 1
   BaseDistanceStrength: 5
   Inertia: 0
-  Dampening: 0.5
+  Dampening: 0.75
   SecondaryConnections: []
   RotationOffset: 0
   LastPosition: {x: 0, y: 0}
@@ -7162,7 +7162,7 @@ MonoBehaviour:
   BaseStrength: 1
   BaseDistanceStrength: 5
   Inertia: 0
-  Dampening: 0.5
+  Dampening: 0.75
   SecondaryConnections: []
   RotationOffset: 0
   LastPosition: {x: 0, y: 0}

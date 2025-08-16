@@ -25,7 +25,7 @@ public class ObjectPositioner : MonoBehaviour
     void Update()
     {
         if (_lastPosition != transform.position ||
-            _lastScale != transform.localScale ||
+            _lastScale != transform.lossyScale ||
             _lastRotation != transform.eulerAngles.z) {
             
             UpdateLastPositions();
