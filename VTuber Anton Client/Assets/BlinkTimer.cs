@@ -8,15 +8,18 @@ public class BlinkTimer : MonoBehaviour {
     public float HappyStartThreshold = 0.4f;
     public float HappyEndThreshold = 0.2f;
 
+    public string HappyParameterString = "HappyClose";
+    public string BlinkParameterString = "Blink";
+
     private float blinkCountdown;
     
 
     public void SetHappy(float happyValue) {
         if (happyValue > 0.4f) {
-            Animator.SetBool("HappyClose", true);
+            Animator.SetBool(HappyParameterString, true);
         }
         if (happyValue < 0.1f) {
-            Animator.SetBool("HappyClose", false);
+            Animator.SetBool(HappyParameterString, false);
         }
     }
 
@@ -28,7 +31,7 @@ public class BlinkTimer : MonoBehaviour {
         blinkCountdown -= Time.deltaTime;
         if (blinkCountdown < 0) {
             blinkCountdown += Random.Range(3f, 10f);
-            Animator.SetTrigger("Blink");
+            Animator.SetTrigger(BlinkParameterString);
         }
     }
 }

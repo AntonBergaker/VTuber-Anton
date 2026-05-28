@@ -6,6 +6,7 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<LipsyncPacket>
     public WebsocketClient Client;
     public Mouth Mouth;
     public BlinkTimer Eyes;
+    public string Identifier;
 
     [SerializeField]
     private LoudnessBobber loudnessBobber;
@@ -24,7 +25,7 @@ public class ScarecrowController : MonoBehaviour, IPacketListener<LipsyncPacket>
 
     private void Start() {
         Client.Listen<LipsyncPacket>("lipsync", this);
-        Client.Listen<PositionPacket>("scare_position", this);
+        Client.Listen<PositionPacket>(Identifier + "_position", this);
 
 
         if (string.IsNullOrWhiteSpace(Application.absoluteURL)) {
